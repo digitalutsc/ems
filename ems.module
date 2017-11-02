@@ -34,7 +34,7 @@ function ems_help($path, $arg) {
     case 'admin/help#ens':
 
       // Return a line-break version of the README.
-      $readme = file_get_contents(drupal_get_path('module', 'custom_module') . '/README.txt');
+      $readme = file_get_contents(drupal_get_path('module', 'ems') . '/README.md');
       return nl2br($readme);
   }
 }
