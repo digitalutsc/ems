@@ -1,4 +1,6 @@
-
+/*
+Gets TEI for a song collection.
+ */
 
 jQuery(document).ready(function(){
 	var object_pid = get_object_pid();
@@ -25,8 +27,6 @@ jQuery(document).ready(function(){
 
 		}
 	});
-
-
 });
 
 
