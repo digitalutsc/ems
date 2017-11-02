@@ -1,0 +1,24 @@
+<?php
+
+/**
+ * @file
+ * Install and uninstall code for EMS.
+ *
+ */
+
+
+/**
+ * Implements hook_install().
+ */
+function ems_install() {
+
+  // Do some things on install, like setting the module weight.
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function ems_uninstall() {
+
+  // Do some things on uninstall, like deleting all variables.
+}

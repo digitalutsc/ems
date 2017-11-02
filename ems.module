@@ -1,0 +1,41 @@
+<?php
+
+/**
+ * @file
+ * Short file description here.
+ *
+ * Long description here.
+ */
+
+/**
+ * Implements hook_menu().
+ */
+function ems_menu() {
+
+  $items = array();
+  $items['ems/get_tei'] = array(
+    'title' => 'Get TEI Datastreams',
+    'description' => 'Get TEI Datastreams',
+    'page callback' => 'getTEIDatastream',
+    'access callback' => TRUE,
+    'file' => 'includes/EMSController.php',
+    'type' => MENU_CALLBACK,
+  );
+
+  return $items;
+}
+
+/**
+ * Implements hook_help().
+ */
+function ems_help($path, $arg) {
+
+  switch ($path) {
+    case 'admin/help#ens':
+
+      // Return a line-break version of the README.
+      $readme = file_get_contents(drupal_get_path('module', 'custom_module') . '/README.txt');
+      return nl2br($readme);
+  }
+}
+
