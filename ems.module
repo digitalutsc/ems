@@ -13,7 +13,7 @@
 function ems_menu() {
 
   $items = array();
-  $items['ems/get_tei'] = array(
+  $items['ems/get_collation'] = array(
     'title' => 'Get TEI Datastreams',
     'description' => 'Get TEI Datastreams',
     'page callback' => 'getTEIDatastream',

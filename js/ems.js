@@ -6,11 +6,11 @@ jQuery(document).ready(function(){
 	var object_pid = get_object_pid();
 
 	var obj_data = {
-		tei_pid: object_pid
+		pid: object_pid
 	};
 
 	jQuery.ajax({
-		url: location.protocol + '//' + location.host + '/ems/get_tei',
+		url: location.protocol + '//' + location.host + '/ems/get_collation',
 		dataType: 'json',
 		type: 'GET',
 		data: obj_data,
