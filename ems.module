@@ -43,7 +43,7 @@ function ems_help($path, $arg) {
 
 
 /**
- * Send user access related information to js for access control
+ * Send Object info to js for reference
  */
 function ems_islandora_view_object(AbstractObject $object) {
   $pid = "unknown";
