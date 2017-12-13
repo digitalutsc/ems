@@ -9,13 +9,13 @@ $context->name = 'ems';
 $context->description = '';
 $context->tag = '';
 $context->conditions = array(
-  'islandora_context_condition_collection_member' => array(
+  'islandora_context_condition_content_models' => array(
     'values' => array(
       0 => TRUE,
     ),
     'options' => array(
-      'islandora_collection_membership' => array(
-        'ems:root' => 'ems:root',
+      'islandora_cmodels' => array(
+        'islandora:sp_simple_xml' => 'islandora:sp_simple_xml',
       ),
     ),
   ),
@@ -24,8 +24,10 @@ $context->reactions = array(
   'js_module' => array(
     'sites/all/modules/ems' => array(
       'sites/all/modules/ems/js/ems.js' => 'sites/all/modules/ems/js/ems.js',
+      'sites/all/modules/ems/lib/verovio-toolkit.js' => 'sites/all/modules/ems/lib/verovio-toolkit.js',
     ),
   ),
 );
 $context->condition_mode = 0;
+
 ```
