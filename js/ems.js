@@ -3,6 +3,10 @@ Gets TEI for a song collection.
  */
 
 jQuery(document).ready(function(){
+	// Immediately replace to avoid showing the XML
+	var viewerDiv = jQuery(".islandora-simple-xml-content").first();
+	viewerDiv.empty().append('<div><h2>EMS Custom Visuals</h2></div>');
+
 	var object_pid = get_object_pid();
 
 	var obj_data = {
@@ -15,15 +19,15 @@ jQuery(document).ready(function(){
 		type: 'GET',
 		data: obj_data,
 		error: function() {
-			alert("Error in getting TEI XML.")
+			alert("Error in getting TEI XML.");
+			viewerDiv.empty().append('<div><h2>EMS Custom Visuals</h2> Error in getting Collation XML </div>');
 		},
 		success: function(data) {
-			alert("xml Content via AJAX " + data)
 			var xmlDoc = jQuery.parseXML(data);
 			var title = xmlDoc.getElementsByTagName("title")[0].textContent;
 			var titleInfo = "Title from TEI " + title;
 
-			jQuery('<div><h2>EMS Custom Visuals</h2>' + titleInfo + '</div>').appendTo(jQuery("#block-system-main"));
+			viewerDiv.empty().append('<div><h2>EMS Custom Visuals</h2>' + titleInfo + '</div>');
 
 		}
 	});
@@ -31,7 +35,7 @@ jQuery(document).ready(function(){
 
 
 function get_object_pid() {
-	var objectURL = window.location.href;
+	var objectURL = document.location.pathname;
 	var objectPID = objectURL.substr(objectURL.lastIndexOf('/') + 1);
 	objectPID = objectPID.replace("%3A", ":").trim();
 	return objectPID;
