@@ -7,7 +7,7 @@ jQuery(document).ready(function(){
 	var viewerDiv = jQuery(".islandora-simple-xml-content").first();
 	viewerDiv.empty().append('<div><h2>EMS Custom Visuals</h2></div>');
 
-	var object_pid = get_object_pid();
+	var object_pid = Drupal.settings.islandora_ems.pid;
 
 	var obj_data = {
 		pid: object_pid
@@ -32,11 +32,3 @@ jQuery(document).ready(function(){
 		}
 	});
 });
-
-
-function get_object_pid() {
-	var objectURL = document.location.pathname;
-	var objectPID = objectURL.substr(objectURL.lastIndexOf('/') + 1);
-	objectPID = objectPID.replace("%3A", ":").trim();
-	return objectPID;
-}

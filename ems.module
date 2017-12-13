@@ -7,6 +7,8 @@
  * Long description here.
  */
 
+module_load_include('inc', 'islandora', 'includes/solution_packs');
+
 /**
  * Implements hook_menu().
  */
@@ -39,3 +41,19 @@ function ems_help($path, $arg) {
   }
 }
 
+
+/**
+ * Send user access related information to js for access control
+ */
+function ems_islandora_view_object(AbstractObject $object) {
+  $pid = "unknown";
+  if (isset($object)) {
+    $pid = $object->id;
+  }
+
+  drupal_add_js(array('islandora_ems' =>
+    array('pid' => $pid
+    )
+  ), array('type' => 'setting')
+  );
+}
