@@ -58,6 +58,7 @@ function ems_islandora_view_object(AbstractObject $object) {
 }
 
 function ems_preprocess_node(&$variables) {
+  watchdog("ems", "ems_preprocess_node");
   drupal_add_css('https://fonts.googleapis.com/css?family=Roboto:300,400,500', array('type' => 'external'));
   drupal_add_css('https://fonts.googleapis.com/icon?family=Material+Icons', array('type' => 'external'));
 }
