@@ -27,7 +27,7 @@ jQuery(document).ready(function(){
 			var title = xmlDoc.getElementsByTagName("title")[0].textContent;
 			var titleInfo = "Title from TEI " + title;
 
-			viewerDiv.empty().append('<div><h2>EMS Custom Visuals</h2>' + titleInfo + '</div>');
+			viewerDiv.empty().append('<div id="ems_viewer">' + titleInfo + '</div>');
 
 		}
 	});
