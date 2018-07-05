@@ -29,6 +29,21 @@ jQuery(document).ready(function(){
 
 			viewerDiv.empty().append('<div id="ems_viewer">' + titleInfo + '</div>');
 
+			jQuery.loadScript('http://localhost:8000/sites/all/modules/ems/js/bundle.js', function(){
+				alert('bundle.js loaded');
+			});
 		}
 	});
 });
+
+
+
+
+jQuery.loadScript = function (url, callback) {
+	jQuery.ajax({
+		url: url,
+		dataType: 'script',
+		success: callback,
+		async: true
+	});
+}
