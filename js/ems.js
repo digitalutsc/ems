@@ -5,7 +5,7 @@ Gets TEI for a song collection.
 jQuery(document).ready(function(){
 	// Immediately replace to avoid showing the XML
 	var viewerDiv = jQuery(".islandora-simple-xml-content").first();
-	viewerDiv.empty().append('<div><h2>EMS Custom Visuals</h2></div>');
+	viewerDiv.empty().append('<div id="ems_viewer">EMS Custom Visuals</div>');
 
 	var object_pid = Drupal.settings.islandora_ems.pid;
 
