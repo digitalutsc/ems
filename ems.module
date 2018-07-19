@@ -41,11 +41,13 @@ function ems_help($path, $arg) {
   }
 }
 
-
 /**
  * Send Object info to js for reference
  */
 function ems_islandora_view_object(AbstractObject $object) {
+  drupal_add_css('https://fonts.googleapis.com/css?family=Roboto:300,400,500', array('type' => 'external'));
+  drupal_add_css('https://fonts.googleapis.com/icon?family=Material+Icons', array('type' => 'external'));
+
   $pid = "unknown";
   if (isset($object)) {
     $pid = $object->id;
@@ -57,3 +59,5 @@ function ems_islandora_view_object(AbstractObject $object) {
   ), array('type' => 'setting')
   );
 }
+
+
