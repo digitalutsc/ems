@@ -1,6 +1,21 @@
 # ems - Early Modern Songscapes
 
-## Context
+An Islandora module to help facilitate the loading of the music viewer to be used on a site presenting work from the [Early Modern Songscapes Project](http://digitalscholarship.utsc.utoronto.ca/content/early-modern-songscapes-project)
+
+## Requirements
+
+This module requires the following modules/libraries:
+
+* [Context](https://www.drupal.org/project/context)
+* [Context Add Assets](https://www.drupal.org/project/context_addassets)
+* [Islandora Context](https://github.com/mjordan/islandora_context)
+
+## Installation
+Install the module dependencies and then enable the module.
+
+## Configuration
+Please import the following context.
+### Context
 ```
 $context = new stdClass();
 $context->disabled = FALSE; /* Edit this to true to make a default context disabled initially */
@@ -31,3 +46,14 @@ $context->reactions = array(
 $context->condition_mode = 0;
 
 ```
+## Maintainers/Sponsors
+Software leads:
+* [Nat Kanthan](https://github.com/Natkeeran)
+* [Marcus Barnes](https://github.com/MarcusBarnes)
+
+Sponsors:
+* The [Digital Scholarship Unit (DSU)](https://www.utsc.utoronto.ca/digitalscholarship/) at the University of Toronto Scarborough Library
+
+## License
+
+[GNU General Public License, version 3](http://www.gnu.org/licenses/gpl-3.0.txt) or later.
