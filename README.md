@@ -9,6 +9,7 @@ This module requires the following modules/libraries:
 * [Context](https://www.drupal.org/project/context)
 * [Context Add Assets](https://www.drupal.org/project/context_addassets)
 * [Islandora Context](https://github.com/mjordan/islandora_context)
+* [Islandora XML Solution Pack](https://github.com/SFULibrary/islandora_solution_pack_xml)
 
 ## Installation
 Install the module dependencies and then enable the module.
