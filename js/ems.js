@@ -1,13 +1,13 @@
 /*
-Gets TEI for a song collection.
+ Gets TEI for a song collection.
  */
 
 jQuery(window).load(function(){
 	// Immediately replace to avoid showing the XML
 	var viewerDiv = jQuery(".islandora-simple-xml-content").first();
-	viewerDiv.empty().append('<div id="ems_viewer">EMS Custom Visuals</div>');
-
 	var object_pid = Drupal.settings.islandora_ems.pid;
+
+	viewerDiv.empty().append('<div id="ems_viewer" data-song="' + object_pid + '">EMS Custom Visuals</div>');
 
 	var obj_data = {
 		pid: object_pid
@@ -27,7 +27,7 @@ jQuery(window).load(function(){
 			var title = xmlDoc.getElementsByTagName("title")[0].textContent;
 			var titleInfo = "Title from TEI " + title;
 
-			viewerDiv.empty().append('<div id="ems_viewer">' + titleInfo + '</div>');
+			viewerDiv.empty().append('<div id="ems_viewer" data-song="' + object_pid + '">' + titleInfo + '</div>');
 
 			jQuery.loadScript('http://localhost:8000/sites/all/modules/ems/js/bundle.js', function(){
 				alert('bundle.js loaded');
@@ -35,9 +35,6 @@ jQuery(window).load(function(){
 		}
 	});
 });
-
-
-
 
 jQuery.loadScript = function (url, callback) {
 	jQuery.ajax({
