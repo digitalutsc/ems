@@ -28,9 +28,9 @@ jQuery(window).load(function(){
 			var titleInfo = "Title from TEI " + title;
 
 			viewerDiv.empty().append('<div id="ems_viewer" data-song="' + object_pid + '">' + titleInfo + '</div>');
+      var bundlePath = location.origin + '/sites/all/modules/ems/js/bundle.js';
+			jQuery.loadScript(bundlePath, function(){
 
-			jQuery.loadScript('http://localhost:8000/sites/all/modules/ems/js/bundle.js', function(){
-				alert('bundle.js loaded');
 			});
 		}
 	});
