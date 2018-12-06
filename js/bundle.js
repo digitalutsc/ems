@@ -3140,11 +3140,11 @@ function getVariants(app, lemma) {
           const teiUrl = sourceAndId[0];
           // let teiUrl = sourceAndId[0]
           // THESE ARE FOR TESTING
-          // if (teiUrl === 'https://ems.digitalscholarship.utsc.utoronto.ca/islandora/object/ems%3Aamtmtf/datastream/TEI-S5983/view') {
-          //   teiUrl = 'data/tei/Aged_man_that_moves_these_fields-S5983.xml'
+          // if (teiUrl === 'https://ems.digitalscholarship.utsc.utoronto.ca/islandora/object/ems%3Achsowtw/datastream/TEI-S5983/view') {
+          //   teiUrl = 'data/tei/Come_heavy_Souls,_oppressed_with_the_weight-S5983.xml'
           // }
-          // if (teiUrl === 'https://ems.digitalscholarship.utsc.utoronto.ca/islandora/object/ems%3Aamtmtf/datastream/TEI-L638_1/view') {
-          //   teiUrl = 'data/tei/Aged_man_that_moves_these_fields-L638_1.xml'
+          // if (teiUrl === 'https://ems.digitalscholarship.utsc.utoronto.ca/islandora/object/ems%3Achsowtw/datastream/TEI-L638_1/view') {
+          //   teiUrl = 'data/tei/Come_heavy_Souls,_oppressed_with_the_weight-L638_1.xml'
           // }
           // REMOVE ABOVE
           promises.push((0, _isomorphicFetch2.default)(teiUrl).then(response => response.text()).then(text => {
@@ -3183,14 +3183,14 @@ function getVariants(app, lemma) {
             const teiUrl = sourceAndId[0];
             // let teiUrl = sourceAndId[0]
             // THESE ARE FOR TESTING
-            // if (teiUrl === 'https://ems.digitalscholarship.utsc.utoronto.ca/islandora/object/ems%3Aamtmtf/datastream/TEI-S5983/view') {
-            //   teiUrl = 'data/tei/Aged_man_that_moves_these_fields-S5983.xml'
+            // if (teiUrl === 'https://ems.digitalscholarship.utsc.utoronto.ca/islandora/object/ems%3Achsowtw/datastream/TEI-S5983/view') {
+            //   teiUrl = 'data/tei/Come_heavy_Souls,_oppressed_with_the_weight-S5983.xml'
             // }
-            // if (teiUrl === 'https://ems.digitalscholarship.utsc.utoronto.ca/islandora/object/ems%3Aamtmtf/datastream/TEI-L638_1/view') {
-            //   teiUrl = 'data/tei/Aged_man_that_moves_these_fields-L638_1.xml'
+            // if (teiUrl === 'https://ems.digitalscholarship.utsc.utoronto.ca/islandora/object/ems%3Achsowtw/datastream/TEI-L638_1/view') {
+            //   teiUrl = 'data/tei/Come_heavy_Souls,_oppressed_with_the_weight-L638_1.xml'
             // }
-            // if (teiUrl === 'https://ems.digitalscholarship.utsc.utoronto.ca/islandora/object/ems%3Aamtmtf/datastream/TEI-C709/view') {
-            //   teiUrl = 'data/tei/Aged_man_that_moves_these_fields-C709.xml'
+            // if (teiUrl === 'https://ems.digitalscholarship.utsc.utoronto.ca/islandora/object/ems%3Achsowtw/datastream/TEI-C709/view') {
+            //   teiUrl = 'data/tei/Come_heavy_Souls,_oppressed_with_the_weight-C709.xml'
             // }
             // REMOVE ABOVE
             promises.push((0, _isomorphicFetch2.default)(teiUrl).then(response => response.text()).then(text => {
@@ -3306,14 +3306,13 @@ function getMusicVariants(app, lemma) {
           continue;
         }
         const targets = reading.getAttribute('target').trim().split(/\s+/m);
-        // let meiUrl = targets[0].split('#')[0] // Get MEI url from first target; they must all point ot the same file
-        const meiUrl = targets[0].split('#')[0];
+        const meiUrl = targets[0].split('#')[0]; // Get MEI url from first target; they must all point ot the same file
         // THESE ARE FOR TESTING
-        // if (meiUrl === 'https://ems.digitalscholarship.utsc.utoronto.ca/islandora/object/ems%3Aamtmtf/datastream/MEI-S5983/view') {
-        //   meiUrl = 'data/mei/Aged_man_that_moves_these_fields-S5983.mei'
+        // if (meiUrl === 'https://ems.digitalscholarship.utsc.utoronto.ca/islandora/object/ems%3Achsowtw/datastream/MEI-S5983/view') {
+        //   meiUrl = 'data/mei/Come_heavy_Souls,_oppressed_with_the_weight-S5983.mei'
         // }
-        // if (meiUrl === 'https://ems.digitalscholarship.utsc.utoronto.ca/islandora/object/ems%3Aamtmtf/datastream/MEI-L638_1/view') {
-        //   meiUrl = 'data/mei/Aged_man_that_moves_these_fields-L638_1.mei'
+        // if (meiUrl === 'https://ems.digitalscholarship.utsc.utoronto.ca/islandora/object/ems%3Achsowtw/datastream/MEI-L638_1/view') {
+        //   meiUrl = 'data/mei/Come_heavy_Souls,_oppressed_with_the_weight-L638_1.mei'
         // }
         // REMOVE ABOVE
         promises.push((0, _isomorphicFetch2.default)(meiUrl).then(response => response.text()).then(text => {
@@ -37150,8 +37149,8 @@ class MusicVariants extends _react.Component {
         'div',
         { className: 'variant-popout mdc-elevation--z10',
           style: {
-            top: this.props.popoutPosition.top + window.pageYOffset + 25,
-            left: this.props.popoutPosition.left + window.pageXOffset
+            top: this.props.popoutPosition.top - window.pageYOffset + 25,
+            left: this.props.popoutPosition.left - window.pageXOffset
           },
           ref: 'vpopmus' },
         _react2.default.createElement(
@@ -37279,7 +37278,7 @@ class DocumentRenderer extends _react.Component {
                   variant.classList.add('variant');
                   variant.onclick = () => {
                     this.props.getVariants(app, rdg.getAttribute('wit'));
-                    this.props.setPopoutPosition(variant.getBoundingClientRect());
+                    this.props.setPopoutPosition({ top: variant.offsetTop, left: variant.offsetLeft });
                   };
                 }
               }
@@ -37305,7 +37304,7 @@ class DocumentRenderer extends _react.Component {
                           barline.classList.add('musVariant');
                           barline.onclick = () => {
                             this.props.getMusicVariants(app, rdg.getAttribute('source'));
-                            this.props.setMusicPopoutPosition(musVariant.getBoundingClientRect());
+                            this.props.setMusicPopoutPosition({ top: musVariant.offsetTop, left: musVariant.offsetLeft });
                           };
                         }
                         break;
@@ -37313,7 +37312,7 @@ class DocumentRenderer extends _react.Component {
                         musVariant.classList.add('musVariant');
                         musVariant.onclick = () => {
                           this.props.getMusicVariants(app, rdg.getAttribute('source'));
-                          this.props.setMusicPopoutPosition(musVariant.getBoundingClientRect());
+                          this.props.setMusicPopoutPosition({ top: musVariant.offsetTop, left: musVariant.offsetLeft });
                         };
                       }
                     }
