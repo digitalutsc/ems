@@ -3138,6 +3138,15 @@ function getVariants(app, lemma) {
         if (reading.children.length > 0) {
           const sourceAndId = reading.children[0].getAttribute('target').split('#');
           const teiUrl = sourceAndId[0];
+          // let teiUrl = sourceAndId[0]
+          // THESE ARE FOR TESTING
+          // if (teiUrl === 'https://ems.digitalscholarship.utsc.utoronto.ca/islandora/object/ems%3Aamtmtf/datastream/TEI-S5983/view') {
+          //   teiUrl = 'data/tei/Aged_man_that_moves_these_fields-S5983.xml'
+          // }
+          // if (teiUrl === 'https://ems.digitalscholarship.utsc.utoronto.ca/islandora/object/ems%3Aamtmtf/datastream/TEI-L638_1/view') {
+          //   teiUrl = 'data/tei/Aged_man_that_moves_these_fields-L638_1.xml'
+          // }
+          // REMOVE ABOVE
           promises.push((0, _isomorphicFetch2.default)(teiUrl).then(response => response.text()).then(text => {
             const source = parser.parseFromString(text, 'text/xml');
             let variant = source.querySelector(`[*|id="${sourceAndId[1]}"]`);
@@ -3172,6 +3181,18 @@ function getVariants(app, lemma) {
           if (rdg.children.length > 0) {
             const sourceAndId = rdg.children[0].getAttribute('target').split('#');
             const teiUrl = sourceAndId[0];
+            // let teiUrl = sourceAndId[0]
+            // THESE ARE FOR TESTING
+            // if (teiUrl === 'https://ems.digitalscholarship.utsc.utoronto.ca/islandora/object/ems%3Aamtmtf/datastream/TEI-S5983/view') {
+            //   teiUrl = 'data/tei/Aged_man_that_moves_these_fields-S5983.xml'
+            // }
+            // if (teiUrl === 'https://ems.digitalscholarship.utsc.utoronto.ca/islandora/object/ems%3Aamtmtf/datastream/TEI-L638_1/view') {
+            //   teiUrl = 'data/tei/Aged_man_that_moves_these_fields-L638_1.xml'
+            // }
+            // if (teiUrl === 'https://ems.digitalscholarship.utsc.utoronto.ca/islandora/object/ems%3Aamtmtf/datastream/TEI-C709/view') {
+            //   teiUrl = 'data/tei/Aged_man_that_moves_these_fields-C709.xml'
+            // }
+            // REMOVE ABOVE
             promises.push((0, _isomorphicFetch2.default)(teiUrl).then(response => response.text()).then(text => {
               const source = parser.parseFromString(text, 'text/xml');
               let variant = source.querySelector(`[*|id="${sourceAndId[1]}"]`);
@@ -3285,7 +3306,16 @@ function getMusicVariants(app, lemma) {
           continue;
         }
         const targets = reading.getAttribute('target').trim().split(/\s+/m);
-        const meiUrl = targets[0].split('#')[0]; // Get MEI url from first target; they must all point ot the same file
+        // let meiUrl = targets[0].split('#')[0] // Get MEI url from first target; they must all point ot the same file
+        const meiUrl = targets[0].split('#')[0];
+        // THESE ARE FOR TESTING
+        // if (meiUrl === 'https://ems.digitalscholarship.utsc.utoronto.ca/islandora/object/ems%3Aamtmtf/datastream/MEI-S5983/view') {
+        //   meiUrl = 'data/mei/Aged_man_that_moves_these_fields-S5983.mei'
+        // }
+        // if (meiUrl === 'https://ems.digitalscholarship.utsc.utoronto.ca/islandora/object/ems%3Aamtmtf/datastream/MEI-L638_1/view') {
+        //   meiUrl = 'data/mei/Aged_man_that_moves_these_fields-L638_1.mei'
+        // }
+        // REMOVE ABOVE
         promises.push((0, _isomorphicFetch2.default)(meiUrl).then(response => response.text()).then(text => {
           const meisource = parser.parseFromString(text, 'text/xml');
 
@@ -36624,13 +36654,20 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 const mapStateToProps = (state, ownProps) => {
   const returnProps = {};
+  let urlsource = ownProps.urlsource;
+  if (urlsource) {
+    // Attempt to ignore other fragments for overlays like in Drupal and Wordpress
+    if (urlsource.includes('=') || urlsource.includes('/')) {
+      urlsource = false;
+    }
+  }
   if (ownProps.match.params.song) {
     returnProps.song = ownProps.match.params.song;
   } else if (ownProps.song) {
     returnProps.song = ownProps.song;
   }
-  if (ownProps.urlsource) {
-    returnProps.source = ownProps.urlsource;
+  if (urlsource) {
+    returnProps.source = urlsource;
   }
   if (state.resources.tei) {
     if (!state.resources.tei.isFetching) {
@@ -36649,7 +36686,7 @@ const mapStateToProps = (state, ownProps) => {
     if (state.resources.collation.sources) {
       returnProps.sources = state.resources.collation.sources;
       // if a source hasn't been set yet, pick first (give TEI preference)
-      if (!ownProps.urlsource && !ownProps.source) {
+      if (!urlsource && !ownProps.source) {
         returnProps.source = state.resources.collation.sources.tei[0].source;
       }
     }
@@ -36734,6 +36771,7 @@ class ViewerBody extends _react.Component {
       // Only get the collation once
       // https://ems.digitalscholarship.utsc.utoronto.ca/
       this.props.getCollation(`/islandora/object/${this.props.song}/datastream/OBJ/view`);
+      // this.props.getCollation(`data/collations/${this.props.song}.xml`)
       if (this.props.source && this.props.sources) {
         this.getResources();
       }
@@ -36751,10 +36789,12 @@ class ViewerBody extends _react.Component {
   getResources() {
     // https://ems.digitalscholarship.utsc.utoronto.ca/
     this.props.getResource(`/islandora/object/${this.props.song}/datastream/TEI-${this.props.source}/view`, 'tei');
+    // this.props.getResource(`data/tei/${this.props.song}-${this.props.source}.xml`, 'tei')
     // MEI sources are not always present. Check in this.props.sources
     const msource = this.props.sources.mei.filter(s => s.source === this.props.source)[0];
     if (msource) {
       this.props.getResource(`/islandora/object/${this.props.song}/datastream/MEI-${this.props.source}/view`, 'mei');
+      // this.props.getResource(`data/mei/${this.props.song}-${this.props.source}.mei`, 'mei')
     } else {
       this.props.getResource(null, 'mei');
     }
