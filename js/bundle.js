@@ -3138,15 +3138,6 @@ function getVariants(app, lemma) {
         if (reading.children.length > 0) {
           const sourceAndId = reading.children[0].getAttribute('target').split('#');
           const teiUrl = sourceAndId[0];
-          // let teiUrl = sourceAndId[0]
-          // THESE ARE FOR TESTING
-          // if (teiUrl === 'https://ems.digitalscholarship.utsc.utoronto.ca/islandora/object/ems%3Achsowtw/datastream/TEI-S5983/view') {
-          //   teiUrl = 'data/tei/Come_heavy_Souls,_oppressed_with_the_weight-S5983.xml'
-          // }
-          // if (teiUrl === 'https://ems.digitalscholarship.utsc.utoronto.ca/islandora/object/ems%3Achsowtw/datastream/TEI-L638_1/view') {
-          //   teiUrl = 'data/tei/Come_heavy_Souls,_oppressed_with_the_weight-L638_1.xml'
-          // }
-          // REMOVE ABOVE
           promises.push((0, _isomorphicFetch2.default)(teiUrl).then(response => response.text()).then(text => {
             const source = parser.parseFromString(text, 'text/xml');
             let variant = source.querySelector(`[*|id="${sourceAndId[1]}"]`);
@@ -3181,18 +3172,6 @@ function getVariants(app, lemma) {
           if (rdg.children.length > 0) {
             const sourceAndId = rdg.children[0].getAttribute('target').split('#');
             const teiUrl = sourceAndId[0];
-            // let teiUrl = sourceAndId[0]
-            // THESE ARE FOR TESTING
-            // if (teiUrl === 'https://ems.digitalscholarship.utsc.utoronto.ca/islandora/object/ems%3Achsowtw/datastream/TEI-S5983/view') {
-            //   teiUrl = 'data/tei/Come_heavy_Souls,_oppressed_with_the_weight-S5983.xml'
-            // }
-            // if (teiUrl === 'https://ems.digitalscholarship.utsc.utoronto.ca/islandora/object/ems%3Achsowtw/datastream/TEI-L638_1/view') {
-            //   teiUrl = 'data/tei/Come_heavy_Souls,_oppressed_with_the_weight-L638_1.xml'
-            // }
-            // if (teiUrl === 'https://ems.digitalscholarship.utsc.utoronto.ca/islandora/object/ems%3Achsowtw/datastream/TEI-C709/view') {
-            //   teiUrl = 'data/tei/Come_heavy_Souls,_oppressed_with_the_weight-C709.xml'
-            // }
-            // REMOVE ABOVE
             promises.push((0, _isomorphicFetch2.default)(teiUrl).then(response => response.text()).then(text => {
               const source = parser.parseFromString(text, 'text/xml');
               let variant = source.querySelector(`[*|id="${sourceAndId[1]}"]`);
@@ -3307,14 +3286,6 @@ function getMusicVariants(app, lemma) {
         }
         const targets = reading.getAttribute('target').trim().split(/\s+/m);
         const meiUrl = targets[0].split('#')[0]; // Get MEI url from first target; they must all point ot the same file
-        // THESE ARE FOR TESTING
-        // if (meiUrl === 'https://ems.digitalscholarship.utsc.utoronto.ca/islandora/object/ems%3Achsowtw/datastream/MEI-S5983/view') {
-        //   meiUrl = 'data/mei/Come_heavy_Souls,_oppressed_with_the_weight-S5983.mei'
-        // }
-        // if (meiUrl === 'https://ems.digitalscholarship.utsc.utoronto.ca/islandora/object/ems%3Achsowtw/datastream/MEI-L638_1/view') {
-        //   meiUrl = 'data/mei/Come_heavy_Souls,_oppressed_with_the_weight-L638_1.mei'
-        // }
-        // REMOVE ABOVE
         promises.push((0, _isomorphicFetch2.default)(meiUrl).then(response => response.text()).then(text => {
           const meisource = parser.parseFromString(text, 'text/xml');
 
@@ -36770,7 +36741,6 @@ class ViewerBody extends _react.Component {
       // Only get the collation once
       // https://ems.digitalscholarship.utsc.utoronto.ca/
       this.props.getCollation(`/islandora/object/${this.props.song}/datastream/OBJ/view`);
-      // this.props.getCollation(`data/collations/${this.props.song}.xml`)
       if (this.props.source && this.props.sources) {
         this.getResources();
       }
@@ -36788,12 +36758,10 @@ class ViewerBody extends _react.Component {
   getResources() {
     // https://ems.digitalscholarship.utsc.utoronto.ca/
     this.props.getResource(`/islandora/object/${this.props.song}/datastream/TEI-${this.props.source}/view`, 'tei');
-    // this.props.getResource(`data/tei/${this.props.song}-${this.props.source}.xml`, 'tei')
     // MEI sources are not always present. Check in this.props.sources
     const msource = this.props.sources.mei.filter(s => s.source === this.props.source)[0];
     if (msource) {
       this.props.getResource(`/islandora/object/${this.props.song}/datastream/MEI-${this.props.source}/view`, 'mei');
-      // this.props.getResource(`data/mei/${this.props.song}-${this.props.source}.mei`, 'mei')
     } else {
       this.props.getResource(null, 'mei');
     }
@@ -37002,12 +36970,13 @@ class Variants extends _react.Component {
 
   render() {
     if (this.props.variants.length > 0 && this.props.popoutPosition) {
+      console.log(this.props.popoutPosition, window.scrollY, window.scrollX);
       return _react2.default.createElement(
         'div',
         { className: 'variant-popout mdc-elevation--z10',
           style: {
-            top: this.props.popoutPosition.top + window.pageYOffset + 25,
-            left: this.props.popoutPosition.left + window.pageXOffset
+            top: this.props.popoutPosition.top - (window.scrollY + this.props.popoutPosition.parentTop),
+            left: this.props.popoutPosition.left - (window.scrollX + this.props.popoutPosition.parentLeft)
           },
           ref: 'vpop' },
         _react2.default.createElement(
@@ -37149,8 +37118,8 @@ class MusicVariants extends _react.Component {
         'div',
         { className: 'variant-popout mdc-elevation--z10',
           style: {
-            top: this.props.popoutPosition.top - window.pageYOffset + 25,
-            left: this.props.popoutPosition.left - window.pageXOffset
+            top: this.props.popoutPosition.top - (window.scrollY + this.props.popoutPosition.parentTop),
+            left: this.props.popoutPosition.left - (window.scrollX + this.props.popoutPosition.parentLeft)
           },
           ref: 'vpopmus' },
         _react2.default.createElement(
@@ -37276,9 +37245,15 @@ class DocumentRenderer extends _react.Component {
                 const variant = teiData.querySelector(`#${sourceAndId[1]}`);
                 if (variant) {
                   variant.classList.add('variant');
-                  variant.onclick = () => {
+                  variant.onclick = e => {
                     this.props.getVariants(app, rdg.getAttribute('wit'));
-                    this.props.setPopoutPosition({ top: variant.offsetTop, left: variant.offsetLeft });
+                    const parentPos = e.target.offsetParent.getBoundingClientRect();
+                    this.props.setPopoutPosition({
+                      top: e.pageY,
+                      left: e.pageX,
+                      parentTop: parentPos.top,
+                      parentLeft: parentPos.left
+                    });
                   };
                 }
               }
@@ -37302,17 +37277,29 @@ class DocumentRenderer extends _react.Component {
                         const barline = musVariant.querySelector('.barLineAttr');
                         if (barline) {
                           barline.classList.add('musVariant');
-                          barline.onclick = () => {
+                          barline.onclick = e => {
                             this.props.getMusicVariants(app, rdg.getAttribute('source'));
-                            this.props.setMusicPopoutPosition({ top: musVariant.offsetTop, left: musVariant.offsetLeft });
+                            const parentPos = e.target.closest('tei-notatedmusic').offsetParent.getBoundingClientRect();
+                            this.props.setMusicPopoutPosition({
+                              top: e.pageY,
+                              left: e.pageX,
+                              parentTop: parentPos.top,
+                              parentLeft: parentPos.left
+                            });
                           };
                         }
                         break;
                       } else {
                         musVariant.classList.add('musVariant');
-                        musVariant.onclick = () => {
+                        musVariant.onclick = e => {
                           this.props.getMusicVariants(app, rdg.getAttribute('source'));
-                          this.props.setMusicPopoutPosition({ top: musVariant.offsetTop, left: musVariant.offsetLeft });
+                          const parentPos = e.target.closest('tei-notatedmusic').offsetParent.getBoundingClientRect();
+                          this.props.setMusicPopoutPosition({
+                            top: e.pageY,
+                            left: e.pageX,
+                            parentTop: parentPos.top,
+                            parentLeft: parentPos.left
+                          });
                         };
                       }
                     }
