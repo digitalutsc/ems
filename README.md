@@ -1,4 +1,5 @@
 # ems - Early Modern Songscapes
+[![DOI](https://zenodo.org/badge/109277387.svg)](https://zenodo.org/badge/latestdoi/109277387)
 
 An Islandora module to help facilitate the loading of the music viewer to be used on a site presenting work from the [Early Modern Songscapes Project](http://digitalscholarship.utsc.utoronto.ca/content/early-modern-songscapes-project)
 
