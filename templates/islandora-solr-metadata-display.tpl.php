@@ -24,66 +24,47 @@
   <legend><span class="fieldset-legend"><?php print t('Details'); ?></span></legend>
   <div class="fieldset-wrapper">
     <dl xmlns:dcterms="http://purl.org/dc/terms/" class="islandora-inline-metadata islandora-metadata-fields">
-      <?php
-        $row_field = 0;
-        $skip_fields = array("mods_name_personal_role_roleTerm_text_ms",
-          "mods_relatedItem_constituent_titleInfo_title_ms",
-          "mods_relatedItem_constituent_relatedItem_host_titleInfo_title_ms",
-          "mods_relatedItem_constituent_relatedItem_host_originInfo_dateCreated_ms",
-          "mods_relatedItem_constituent_relatedItem_host_originInfo_publisher_ms",
-          "mods_relatedItem_constituent_relatedItem_host_identifier_local_ms",
-          "mods_relatedItem_constituent_relatedItem_host_name_personal_role_roleTerm_text_ms");
-      ?>
+    <?php
+      $row_field = 0;
+      $skip_fields = array(
+        "mods_name_personal_role_roleTerm_text_ms",
+        "PID"
+      );
+
+    ?>
+      <?php $row_field = 0; ?>
       <?php foreach($solr_fields as $value): ?>
         <!-- Skip the fields we are going to programmatically add -->
-        <?php if(in_array($value['solr_field'], $skip_fields)) { continue; } ?>
+        <?php if (in_array($value['solr_field'], $skip_fields)) {
+          continue;
+        } ?>
 
         <!-- name (role) -->
-        <?php if($value['solr_field'] == "mods_name_personal_namePart_ms") { ?>
-            <dt class="<?php print $row_field == 0 ? ' first' : ''; ?>">
-                <?php print $value['display_label']; ?>
-            </dt>
-            <dd class="<?php print $row_field == 0 ? ' first' : ''; ?>">
-                <?php
-                    $names = $value['value'];
-                    $roles = $solr_fields['mods_name_personal_role_roleTerm_text_ms']['value'];
-                    $names_roles = array();
+        <?php if ($value['solr_field'] == "mods_name_personal_namePart_ms") { ?>
+          <dt class="<?php print $row_field == 0 ? ' first' : ''; ?>">
+            <?php print $value['display_label']; ?>
+          </dt>
 
-                    foreach ($names as $key => $name_value) {
-                        $role_value = "";
-                        if(isset($roles[$key])) {
-                            $role_value = $roles[$key];
-                        }
-                        $name_role = $name_value . " (" . $role_value . ") ";
-                        array_push($names_roles, $name_role);
-                    }
-                    print check_markup(implode($variables['separator'], $names_roles), 'islandora_solr_metadata_filtered_html');
-                ?>
-            </dd>
-        <?php continue; } ?>
+          <dd class="<?php print $row_field == 0 ? ' first' : ''; ?>">
+          <?php
+            $names = $value['value'];
+            $roles = $solr_fields['mods_name_personal_role_roleTerm_text_ms']['value'];
+            $names_roles = array();
 
-        <?php if($value['solr_field'] == "mods_relatedItem_constituent_relatedItem_host_name_personal_namePart_ms") { ?>
-              <dt class="<?php print $row_field == 0 ? ' first' : ''; ?>">
-                <?php print $value['display_label']; ?>
-              </dt>
-              <dd class="<?php print $row_field == 0 ? ' first' : ''; ?>">
-                <?php
-                $names = $value['value'];
-                $roles = $solr_fields['mods_relatedItem_constituent_relatedItem_host_name_personal_role_roleTerm_text_ms']['value'];
-                $names_roles = array();
-
-                foreach ($names as $key => $name_value) {
-                  $role_value = "";
-                  if(isset($roles[$key])) {
-                    $role_value = $roles[$key];
-                  }
-                  $name_role = $name_value . " (" . $role_value . ") ";
-                  array_push($names_roles, $name_role);
-                }
-                print check_markup(implode($variables['separator'], $names_roles), 'islandora_solr_metadata_filtered_html');
-                ?>
-              </dd>
-        <?php continue; } ?>
+            foreach ($names as $key => $name_value) {
+              $role_value = "";
+              if (isset($roles[$key])) {
+                $role_value = $roles[$key];
+              }
+              $name_role = $name_value . " (" . $role_value . ")";
+              array_push($names_roles, $name_role);
+            }
+            $names_roles = array_unique($names_roles);
+            print check_markup(implode($variables['separator'], $names_roles), 'islandora_solr_metadata_filtered_html');
+           ?>
+           </dd>
+        <?php continue;
+        } ?>
 
         <dt class="<?php print $row_field == 0 ? ' first' : ''; ?>">
           <?php print $value['display_label']; ?>
@@ -93,86 +74,120 @@
         </dd>
         <?php $row_field++; ?>
       <?php endforeach; ?>
-
       <?php
-      $titles = $solr_fields['mods_relatedItem_constituent_titleInfo_title_ms']['value'];
-      $title_label = $solr_fields['mods_relatedItem_constituent_titleInfo_title_ms']['display_label'];
-      $number_of_constituent = sizeof($titles);
+        $constituents_field_label = $variables['constituent_labels'];
+        $constituents_info = $variables['constituent_info'];
+        $indent_space = "&nbsp;&nbsp;&nbsp";
 
-      $hosts = $solr_fields['mods_relatedItem_constituent_relatedItem_host_titleInfo_title_ms']['value'];
-      $host_label = $solr_fields['mods_relatedItem_constituent_relatedItem_host_titleInfo_title_ms']['display_label'];
+        foreach ($constituents_info as $key => $constituents_obj) {
+        $constituents_num = $key + 1;
 
-      $dates = $solr_fields['mods_relatedItem_constituent_relatedItem_host_originInfo_dateCreated_ms']['value'];
-      $date_label = $solr_fields['mods_relatedItem_constituent_relatedItem_host_originInfo_dateCreated_ms']['display_label'];
+        if (trim($constituents_obj["title"]) == "") {
+          continue;
+        }
 
-      $publishers = $solr_fields['mods_relatedItem_constituent_relatedItem_host_originInfo_publisher_ms']['value'];
-      $publisher_label = $solr_fields['mods_relatedItem_constituent_relatedItem_host_originInfo_publisher_ms']['display_label'];
-
-      $local_ids = $solr_fields['mods_relatedItem_constituent_relatedItem_host_identifier_local_ms']['value'];
-      $local_id_label = $solr_fields['mods_relatedItem_constituent_relatedItem_host_identifier_local_ms']['display_label'];
-
-      foreach ($titles as $key => $title) {
       ?>
+                    <dt class="<?php print $row_field == 0 ? ' first' : ''; ?>">
+                      <?php print $constituents_field_label["constituent_title"] . " " . $constituents_num; ?>
+                    </dt>
+                    <dd class="<?php print $row_field == 0 ? ' first' : ''; ?>">
+                      <?php print $constituents_obj["title"]; ?>
+                    </dd>
 
-        <dt class="<?php print $row_field == 0 ? ' first' : ''; ?>">
-          <?php print $title_label; ?>
-        </dt>
-        <dd class="<?php print $row_field == 0 ? ' first' : ''; ?>">
-          <?php print $title; ?>
-        </dd>
+                  <?php if($constituents_obj["host_title"] != "") { ?>
+                        <dt class="<?php print $row_field == 0 ? ' first' : ''; ?>">
+                          <?php print $indent_space . $constituents_field_label["host_title"]; ?>
+                        </dt>
+                        <dd class="<?php print $row_field == 0 ? ' first' : ''; ?>">
+                          <?php print $constituents_obj["host_title"]; ?>
+                        </dd>
+                  <?php } ?>
 
-        <?php if(sizeof($hosts) == $number_of_constituent) { ?>
-         <dt class="<?php print $row_field == 0 ? ' first' : ''; ?>">
-           <?php print $host_label; ?>
-         </dt>
-        <dd class="<?php print $row_field == 0 ? ' first' : ''; ?>">
-          <?php
-            if(isset($hosts[$key])) {
-                print $hosts[$key];
-            }
-          ?>
-        </dd>
-        <?php } ?>
+                    <dt class="<?php print $row_field == 0 ? ' first' : ''; ?>">
+                      <?php print $indent_space . $constituents_field_label["contributor"]; ?>
+                    </dt>
+                    <dd class="<?php print $row_field == 0 ? ' first' : ''; ?>">
+                      <?php
+                        if(isset($constituents_info[0]["name"])) {
 
-        <?php if(sizeof($dates) == $number_of_constituent) { ?>
-        <dt class="<?php print $row_field == 0 ? ' first' : ''; ?>">
-          <?php print $date_label; ?>
-        </dt>
-        <dd class="<?php print $row_field == 0 ? ' first' : ''; ?>">
-          <?php
-            if(isset($dates[$key])) {
-              print $dates[$key];
-            }
-          ?>
-        </dd>
-        <?php } ?>
+                        $name_info = $constituents_info[0]["name"];
+                        $names_roles = array();
+                          foreach ($name_info as $key => $name_obj) {
+                            $name_part = $name_obj["namepart"];
+                            $role = $name_obj["role"];
+                            $name_role = $name_part . " (" . $role . ") ";
+                            array_push($names_roles, $name_role);
+                          }
+                          $names_roles = array_unique($names_roles);
+                          print check_markup(implode($variables['separator'], $names_roles), 'islandora_solr_metadata_filtered_html');
 
-        <?php if(sizeof($publishers) == $number_of_constituent) { ?>
-        <dt class="<?php print $row_field == 0 ? ' first' : ''; ?>">
-          <?php print $publisher_label; ?>
-        </dt>
-        <dd class="<?php print $row_field == 0 ? ' first' : ''; ?>">
-          <?php
-            if(isset($publishers[$key])) {
-              print $publishers[$key];
-            }
-          ?>
-        </dd>
-        <?php } ?>
+                        }
+                      ?>
+                    </dd>
 
-        <?php if(sizeof($local_ids) == $number_of_constituent) { ?>
-        <dt class="<?php print $row_field == 0 ? ' first' : ''; ?>">
-          <?php print $local_id_label; ?>
-        </dt>
-        <dd class="<?php print $row_field == 0 ? ' first' : ''; ?>">
-          <?php
-            if(isset($local_ids[$key])) {
-              print $local_ids[$key];
-            }
-          ?>
-        </dd>
-      <?php }} ?>
+                    <?php if($constituents_obj["date"] != "") { ?>
+                    <dt class="<?php print $row_field == 0 ? ' first' : ''; ?>">
+                      <?php print $indent_space .  $constituents_field_label["date"]; ?>
+                    </dt>
+                    <dd class="<?php print $row_field == 0 ? ' first' : ''; ?>">
+                      <?php print $constituents_obj["date"]; ?>
+                    </dd>
+                    <?php } ?>
 
+                    <?php if($constituents_obj["publisher"] != "") { ?>
+                    <dt class="<?php print $row_field == 0 ? ' first' : ''; ?>">
+                      <?php print $indent_space . $constituents_field_label["publisher"]; ?>
+                    </dt>
+                    <dd class="<?php print $row_field == 0 ? ' first' : ''; ?>">
+                      <?php print $constituents_obj["publisher"]; ?>
+                    </dd>
+                    <?php } ?>
+
+                    <?php if($constituents_obj["publisher_place"] != "") { ?>
+                    <dt class="<?php print $row_field == 0 ? ' first' : ''; ?>">
+                      <?php print$indent_space .  $constituents_field_label["publisher_place"]; ?>
+                    </dt>
+                    <dd class="<?php print $row_field == 0 ? ' first' : ''; ?>">
+                      <?php print $constituents_obj["publisher_place"]; ?>
+                    </dd>
+                    <?php } ?>
+
+                    <?php if($constituents_obj["identifier_local"] != "") { ?>
+                    <dt class="<?php print $row_field == 0 ? ' first' : ''; ?>">
+                      <?php print $indent_space . $constituents_field_label["identifier_local"]; ?>
+                    </dt>
+                    <dd class="<?php print $row_field == 0 ? ' first' : ''; ?>">
+                      <?php print $constituents_obj["identifier_local"]; ?>
+                    </dd>
+                    <?php } ?>
+
+                    <?php if($constituents_obj["identifier_wing"] != "") { ?>
+                    <dt class="<?php print $row_field == 0 ? ' first' : ''; ?>">
+                      <?php print $indent_space . $constituents_field_label["identifier_wing"]; ?>
+                    </dt>
+                    <dd class="<?php print $row_field == 0 ? ' first' : ''; ?>">
+                      <?php print $constituents_obj["identifier_wing"]; ?>
+                    </dd>
+                    <?php } ?>
+
+                    <?php if($constituents_obj["physical_location"] != "") { ?>
+                    <dt class="<?php print $row_field == 0 ? ' first' : ''; ?>">
+                      <?php print $indent_space . $constituents_field_label["physical_location"]; ?>
+                    </dt>
+                    <dd class="<?php print $row_field == 0 ? ' first' : ''; ?>">
+                      <?php print $constituents_obj["physical_location"]; ?>
+                    </dd>
+                    <?php } ?>
+
+                    <?php if($constituents_obj["digital_location"] != "") { ?>
+                    <dt class="<?php print $row_field == 0 ? ' first' : ''; ?>">
+                      <?php print $indent_space . $constituents_field_label["digital_location"]; ?>
+                    </dt>
+                    <dd class="<?php print $row_field == 0 ? ' first' : ''; ?>">
+                      <?php print $constituents_obj["digital_location"]; ?>
+                    </dd>
+
+                <?php }} ?>      
     </dl>
   </div>
 </fieldset>
@@ -186,5 +201,4 @@
     </div>
   </fieldset>
 <?php endif; ?>
-
 
