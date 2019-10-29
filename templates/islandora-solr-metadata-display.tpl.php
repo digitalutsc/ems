@@ -170,6 +170,15 @@
                     </dd>
                     <?php } ?>
 
+                    <?php if($constituents_obj["page_info"] != "") { ?>
+                    <dt class="<?php print $row_field == 0 ? ' first' : ''; ?>">
+                      <?php print $indent_space . $constituents_field_label["page_info"]; ?>
+                    </dt>
+                    <dd class="<?php print $row_field == 0 ? ' first' : ''; ?>">
+                      <?php print $constituents_obj["page_info"]; ?>
+                    </dd>
+                    <?php } ?>
+
                     <?php if($constituents_obj["physical_location"] != "") { ?>
                     <dt class="<?php print $row_field == 0 ? ' first' : ''; ?>">
                       <?php print $indent_space . $constituents_field_label["physical_location"]; ?>
@@ -186,6 +195,7 @@
                     <dd class="<?php print $row_field == 0 ? ' first' : ''; ?>">
                       <?php print $constituents_obj["digital_location"]; ?>
                     </dd>
+                    
 
                 <?php }} ?>      
     </dl>

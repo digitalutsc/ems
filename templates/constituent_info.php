@@ -12,6 +12,7 @@ function get_constituent_label() {
   $constituents_field_label["identifier_wing"] = "Identifier (Wing)";
   $constituents_field_label["physical_location"] = "Physical Location";
   $constituents_field_label["digital_location"] = "Digital Location";
+  $constituents_field_label["page_info"] = "Page Info";
   return $constituents_field_label;
 }
 
@@ -51,8 +52,20 @@ function get_constituent_info($pid) {
       $physical_location = get_element_string($constituents_obj, "mods:relatedItem[@type='host']/mods:location/mods:physicalLocation");
       $constituents_info[$key]["physical_location"] = $physical_location;
 
-      $digital_location = get_element_string($constituents_obj, "mods:relatedItem[@type='host']/mods:location/mods:holdingSimple/mods:copyInformation/mods:subLocation");
+      $digital_location = get_element_string($constituents_obj, "mods:relatedItem[@type='host']/mods:location/mods:holdingSimple/mods:copyInformation/mods:subLocation");      
       $constituents_info[$key]["digital_location"] = $digital_location;
+
+      $page_start = get_element_string($constituents_obj, "mods:relatedItem[@type='host']/mods:part/mods:extent/mods:start");      
+      $page_end = get_element_string($constituents_obj, "mods:relatedItem[@type='host']/mods:part/mods:extent/mods:end");      
+      $page_text = get_element_string($constituents_obj, "mods:relatedItem[@type='host']/mods:part/mods:extent/mods:text");      
+
+      $page_info = "";
+      if (!empty($page_start) && !empty($page_text)) {
+        $page_info = $page_start . " - " . $page_end . " (" . $page_text . ")";
+      } elseif (!empty($page_text)) {
+        $page_info = $page_text;
+      }
+      $constituents_info[$key]["page_info"] = $page_info;
 
       $name_ele = $constituents_obj->xpath("mods:relatedItem[@type='host']/mods:name[@type='personal']");
       foreach ($name_ele as $key1 => $name_obj) {
